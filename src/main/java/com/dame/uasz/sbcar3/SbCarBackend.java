@@ -15,6 +15,9 @@ import com.dame.uasz.sbcar3.domain.Owner;
 import com.dame.uasz.sbcar3.domain.OwnerRepository;
 import com.dame.uasz.sbcar3.domain.User;
 import com.dame.uasz.sbcar3.domain.UserRepository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class SbCarBackend implements CommandLineRunner {
@@ -36,7 +39,19 @@ public class SbCarBackend implements CommandLineRunner {
 			public static void main(String[] args) {
 				SpringApplication.run(SbCarBackend.class, args);
 			}
-		
+
+			@Bean
+			public WebMvcConfigurer corsConfigurer() {
+				return new WebMvcConfigurer() {
+					@Override
+					public void addCorsMappings(CorsRegistry registry) {
+						registry.addMapping("/**")
+								.allowedOrigins("*")
+								.allowedMethods("GET", "POST", "PUT", "DELETE");
+					}
+				};
+			}
+
 			@Override
 			public void run(String... args) throws Exception {
 				// Add owner objects and save these to db 
